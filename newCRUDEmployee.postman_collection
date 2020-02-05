@@ -1,0 +1,268 @@
+{
+	"info": {
+		"_postman_id": "e778f1b1-153a-4450-b47a-a83baf500bf3",
+		"name": "new CRUD Employee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create new employee",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c9864561-c0c4-4811-b1b7-b77243ef67e0",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1bc67e10-f39d-4fb5-aaaa-4cfad4affb6d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.name).to.eql(pm.environment.get(\"employee_name\"));",
+							"    pm.environment.set(\"employee_id\",jsonData.data.id);",
+							"    });",
+							"",
+							"pm.test(\"Salary\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.salary).to.eql(pm.environment.get(\"employee_salary\"));",
+							"    ",
+							"});",
+							"",
+							"pm.test(\"age\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.age).to.eql(pm.environment.get(\"employee_age\"));",
+							"     ",
+							"\"\"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"name\":\"{{employee_name}}\",\n\"salary\":\"{{employee_salary}}\",\n\"age\":\"{{employee_age}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/create"
+			},
+			"response": []
+		},
+		{
+			"name": "verify employee details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c9ffe019-6f52-4b96-9e73-b06a8d296404",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"verify employee name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.employee_name).to.eql(pm.environment.get(\"employee_name\"));",
+							"});",
+							"pm.test(\"verify employee salary\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.employee_salary).to.eql(\"1500\");",
+							"});",
+							"    pm.test(\"verify employee age\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.employee_age).to.eql(\"25\");",
+							"\"\"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/employee/{{employee_id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Verify update employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bcf1c38f-90f1-4904-812a-a287c018e177",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"verify employee name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.employee_name).to.eql(\"test1\");",
+							"    pm.environment.set(\"employee_id\", jsonData.data.id);",
+							"});  ",
+							"",
+							"",
+							"",
+							"pm.test(\"verify employee salary\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.employee_salary).to.eql(\"1500\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"verify employee age\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.employee_age).to.eql(\"25\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"name\":\"{{employee_name}}\",\n\"salary\":\"{{employee_salary}}\",\n\"age\":\"{{employee_age}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/update/{{employee_id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "verify the read update details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c9d796f3-fd44-424c-8a8c-f05b3ce5ac10",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"verify employee name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.employee_name).to.eql(\"test1\");",
+							"",
+							"pm.test(\"verify employee salary\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.employee_salary).to.eql(\"1500\");",
+							"});",
+							"});",
+							"pm.test(\"verify employee age\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.employee_age).to.eql(\"25\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "{{base_url}}/employee/{{employee_id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "verify deletion message",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f071169e-f8bc-4ca4-8115-a079dac8d762",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"verify deletion message\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.message).to.eql(\"successfully! deleted Records\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "{{base_url}}/delete/{{employee_id}}"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
